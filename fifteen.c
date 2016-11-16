@@ -192,8 +192,8 @@ void init(void)
                 siz = siz-1;
                 }
             }
-            
         }
+    }
     
 }
 
@@ -202,7 +202,7 @@ void init(void)
  */
 void draw(void)
 {
-    // TODO
+    
 }
 
 /**
