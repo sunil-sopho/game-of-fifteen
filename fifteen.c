@@ -29,6 +29,7 @@
 // board
 int board[DIM_MAX][DIM_MAX];
 
+
 // dimensions
 int d;
 
@@ -202,6 +203,14 @@ void init(void)
  */
 void draw(void)
 {
+    for(int i=0;i<d;i++)
+    {
+        for(int j=0;j<d;j++)
+        {
+            printf("%d ",board[i][j]);
+        }
+        printf("\n");
+    }
     
 }
 
@@ -211,7 +220,29 @@ void draw(void)
  */
 bool move(int tile)
 {
-    // TODO
+    int i=0,j=0,eqat=0;
+    
+    for(int i=0;i<d;i++)
+    {
+        for(int j=0;j<d;j++)
+        {
+            if(board[i][j] == tile)
+            {
+                int a=-1,b=-1;
+                for(a=-1;a<2;a++)
+                {
+                    for(b=-1;b<2;b++)
+                    {
+                        if(board[i+a][j+b] == -1)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        printf("\n");
+    }
     return false;
 }
 
