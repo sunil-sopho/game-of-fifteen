@@ -29,7 +29,7 @@
 
 // board
 int board[DIM_MAX][DIM_MAX];
- int ac_x,ac_y,rp_x,rp_y;
+ int ac_x, ac_y, rp_x, rp_y;
 
 // dimensions
 int d;
@@ -126,8 +126,8 @@ int main(int argc, string argv[])
         }
         else
         {
-         board[rp_x][rp_y]=tile;
-         board[ac_x][ac_y]=CONS;
+            board[rp_x][rp_y] = tile;
+            board[ac_x][ac_y] = CONS;
         }
 
         // sleep thread for animation's sake
@@ -166,18 +166,18 @@ void greet(void)
  */
 void init(void)
 {
-    int siz = d*d-1;
-    if( d%2)
+    int siz = d * d - 1;
+    if ( d % 2)
     {
-        board[d-1][d-1] = CONS; 
-        for(int i=0;i<d;i++)
+        board[d - 1][d - 1] = CONS; 
+        for(int i = 0;i < d;i++)
         {
-            for(int j=0;j<d;j++)
+            for(int j=0;j < d;j++)
             {
-                if(siz != 0)
+                if (siz != 0)
                 {
-                board[i][j] = siz;
-                siz = siz-1;
+                    board[i][j] = siz;
+                    siz = siz - 1;
                 }
             }
             
@@ -186,17 +186,17 @@ void init(void)
     
     else
     {
-        board[d-1][d-1] = CONS;
-        board[d-1][d-2] = 2;
-        board[d-1][d-3] = 1;
-        for(int i=0;i<d;i++)
+        board[d - 1][d - 1] = CONS;
+        board[d - 1][d - 2] = 2;
+        board[d - 1][d - 3] = 1;
+        for(int i=0;i < d;i++)
         {
-            for(int j=0;j<d;j++)
+            for(int j=0;j < d;j++)
             {
-                if(siz >= 3)
+                if (siz >= 3)
                 {
-                board[i][j] = siz;
-                siz = siz-1;
+                    board[i][j] = siz;
+                    siz = siz - 1;
                 }
             }
         }
@@ -209,9 +209,9 @@ void init(void)
  */
 void draw(void)
 {
-    for(int i=0;i<d;i++)
+    for(int i=0;i < d;i++)
     {
-        for(int j=0;j<d;j++)
+        for(int j=0;j < d;j++)
         {
             printf("%d ",board[i][j]);
         }
@@ -224,32 +224,37 @@ void draw(void)
  * If tile borders empty space, moves tile and returns true, else
  * returns false. 
  */
- //int ac_x,ac_y,rp_x,rp_y;
+ // int ac_x,ac_y,rp_x,rp_y;
 bool move(int tile)
 {
-    int i=0,j=0;
+    int i=0, j=0;
     
-    for(i=0;i<d;i++)
+    for(i = 0;i < d;i++)
     {
-        for(j=0;j<d;j++)
+        for(j = 0;j < d;j++)
         {
-            if(board[i][j] == tile)
+            if (board[i][j] == tile)
             {
-                ac_x=i;
-                ac_y=j;
-                int a=-1,b=-1;
-                for(a=-1;a<2;a++)
+                ac_x = i;
+                ac_y = j;
+                int aadd = -1, badd = -1;
+                for(aadd = -1;aadd < 2;aadd++)
                 {
-                    for(b=-1;b<2;b++)
+                    for(badd = -1;badd < 2;badd++)
                     {
-                        if((a==-1&&b==-1)||(a==-1&&b==1)||(a==1&&b==-1)||(a==1&&b==1))
-                        continue;
-                        if((i+a>=0)&&(i+a<d)&&(j+b>=0)&&(j+b<d))
+                        if ((aadd == -1 && badd == -1) || 
+                        (aadd == -1 && badd == 1) || (aadd == 1 && badd == -1)
+                        || (aadd == 1 && badd == 1))
                         {
-                            if(board[i+a][j+b] == CONS)
+                            continue;
+                        }    
+                        if ((i + aadd >= 0) && (i + aadd < d) && 
+                        (j + badd >= 0) && (j + badd < d))
+                        {
+                            if (board[i + aadd][j + badd] == CONS)
                             {
-                                rp_x=i+a;
-                                rp_y=j+b;
+                                rp_x = i + aadd;
+                                rp_y = j + badd;
                                 return true;
                             }    
                         }
@@ -268,16 +273,20 @@ bool move(int tile)
  */
 bool won(void)
 { 
-    int ele=1;
+    int ele = 1;
     
-    for(int i=0;i<d;i++)
+    for(int i=0;i < d;i++)
     {
-        for(int j=0;j<d;j++)
+        for(int j=0;j < d;j++)
         {
-            if(i==d-1 &&j==d-1)
-            break;
-            if(board[i][j]!=ele)
-            return false;
+            if (i == d - 1 && j == d - 1)
+            {
+                break;
+            }    
+            if (board[i][j] != ele)
+            {
+                return false;
+            }    
             ele++;
         }
     }
