@@ -25,10 +25,11 @@
 // constants
 #define DIM_MIN 3
 #define DIM_MAX 9
+#define CONS 0
 
 // board
 int board[DIM_MAX][DIM_MAX];
-
+ int ac_x,ac_y,rp_x,rp_y;
 
 // dimensions
 int d;
@@ -123,6 +124,11 @@ int main(int argc, string argv[])
             printf("\nIllegal move.\n");
             usleep(500000);
         }
+        else
+        {
+         board[rp_x][rp_y]=tile;
+         board[ac_x][ac_y]=CONS;
+        }
 
         // sleep thread for animation's sake
         usleep(500000);
@@ -163,7 +169,7 @@ void init(void)
     int siz = d*d-1;
     if( d%2)
     {
-        board[d-1][d-1] = -1; 
+        board[d-1][d-1] = CONS; 
         for(int i=0;i<d;i++)
         {
             for(int j=0;j<d;j++)
@@ -180,7 +186,7 @@ void init(void)
     
     else
     {
-        board[d-1][d-1] = -1;
+        board[d-1][d-1] = CONS;
         board[d-1][d-2] = 2;
         board[d-1][d-3] = 1;
         for(int i=0;i<d;i++)
@@ -218,24 +224,34 @@ void draw(void)
  * If tile borders empty space, moves tile and returns true, else
  * returns false. 
  */
+ //int ac_x,ac_y,rp_x,rp_y;
 bool move(int tile)
 {
-    int i=0,j=0,eqat=0;
+    int i=0,j=0;
     
-    for(int i=0;i<d;i++)
+    for(i=0;i<d;i++)
     {
-        for(int j=0;j<d;j++)
+        for(j=0;j<d;j++)
         {
             if(board[i][j] == tile)
             {
+                ac_x=i;
+                ac_y=j;
                 int a=-1,b=-1;
                 for(a=-1;a<2;a++)
                 {
                     for(b=-1;b<2;b++)
                     {
-                        if(board[i+a][j+b] == -1)
+                        if((a==-1&&b==-1)||(a==-1&&b==1)||(a==1&&b==-1)||(a==1&&b==1))
+                        continue;
+                        if((i+a>=0)&&(i+a<d)&&(j+b>=0)&&(j+b<d))
                         {
-                            return true;
+                            if(board[i+a][j+b] == CONS)
+                            {
+                                rp_x=i+a;
+                                rp_y=j+b;
+                                return true;
+                            }    
                         }
                     }
                 }
@@ -251,16 +267,21 @@ bool move(int tile)
  * else false.
  */
 bool won(void)
-{
+{ 
+    int ele=1;
     
     for(int i=0;i<d;i++)
     {
         for(int j=0;j<d;j++)
         {
-            
+            if(i==d-1 &&j==d-1)
+            break;
+            if(board[i][j]!=ele)
+            return false;
+            ele++;
         }
     }
-    return false;
+    return true;
 }
 
 
